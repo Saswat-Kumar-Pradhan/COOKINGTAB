@@ -26,8 +26,7 @@ SECRET_KEY = 'django-insecure-m&m%lg2f-dt&dlz7mj+)1tx@5vd-^w_tm4%wa1c9sdk!iju^z+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
-
+ALLOWED_HOSTS = ['.vercel.app','now.sh','127.0.0.1','localhost']
 
 # Application definition
 
@@ -75,10 +74,20 @@ WSGI_APPLICATION = 'cookingtab.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': '-ed*6a4ggDdcB4GDfgD-5ae1-66Add-f',
+        'HOST': 'roundhouse.proxy.rlwy.net',
+        'PORT': '50609',
     }
 }
 
