@@ -9,5 +9,10 @@
             "src": "/(.*)",
             "dest": "cookingtab/wsgi.py"
         }
-    ]
+    ],
+    "functions": {
+        "api/**/*.js": {
+          "runtime": "vercel-python@3.8"
+        }
+      }
 }
