@@ -32,11 +32,11 @@
         .ec{
             padding-right: 0;
         }
-        .ec:nth-child(5n+1) .event {background: linear-gradient(rgb(77, 0, 77), rgb(160, 0, 160));}
-        .ec:nth-child(5n+2) .event {background: linear-gradient(rgb(0, 19, 77), rgb(21, 0, 160));}
-        .ec:nth-child(5n+3) .event {background: linear-gradient(rgb(77, 0, 0), rgb(160, 0, 0));}
-        .ec:nth-child(5n+4) .event {background: linear-gradient(rgb(0, 77, 22), rgb(0, 160, 67));}
-        .ec:nth-child(5n) .event {background: linear-gradient(rgb(51, 42, 1), rgb(159, 143, 4));}
+        .ec:nth-last-child(5n+1) .event {background: linear-gradient(rgb(77, 0, 77), rgb(160, 0, 160));}
+        .ec:nth-last-child(5n+2) .event {background: linear-gradient(rgb(0, 19, 77), rgb(21, 0, 160));}
+        .ec:nth-last-child(5n+3) .event {background: linear-gradient(rgb(77, 0, 0), rgb(160, 0, 0));}
+        .ec:nth-last-child(5n+4) .event {background: linear-gradient(rgb(0, 77, 22), rgb(0, 160, 67));}
+        .ec:nth-last-child(5n) .event {background: linear-gradient(rgb(51, 42, 1), rgb(159, 143, 4));}
         .event{
             /* background-image: linear-gradient(rgb(77, 0, 77), rgb(160, 0, 160)); */
             aspect-ratio: 1.7;
@@ -219,15 +219,17 @@
         <div class="event-container row">
             {% for event in events %}
             <div class="ec col-xs-12 col-sm-12 col-md-6 col-lg-4">
-                <div class="event">
-                    <p>{{event.date}}</p>
-                    <h1>{{event.subject}}</h1><br>
-                    <div class="d-flex justify-content-center">
-                        {% for contribution in event.contribution_set.all %}
-                        <img src="{{contribution.profile.profile_pic.url}}" alt="">
-                        {% endfor %}
+                <a class="text-decoration-none" href="{% url 'eventDetails' event.id forloop.counter %}">
+                    <div class="event">
+                        <p>{{event.date}}</p>
+                        <h1>{{event.subject}}</h1><br>
+                        <div class="d-flex justify-content-center">
+                            {% for contribution in event.contribution_set.all %}
+                            <img src="{{contribution.profile.profile_pic.url}}" alt="">
+                            {% endfor %}
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
             {% endfor %}
         </div><br><br><br>
