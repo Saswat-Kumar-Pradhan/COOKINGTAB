@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from .models import Event, Profile, Purchase, Contribution
+from django.db.models import Sum
 
 # Create your views here.
 
@@ -34,7 +35,10 @@ def addProfile(request):
 
 def eventDetails(request, event_id, y):
     event = Event.objects.get(pk=event_id)
-    profiles = Profile.objects.all()
+    profiles = Contribution.objects.filter(event=event.id).all()
+    # print(profiles.count())
+    # total_price = Purchase.objects.filter(event=event.id).aggregate(Sum('price'))['price__sum']
+    # print(total_price)
     event_contributions = Contribution.objects.all()
     event_purchase = Purchase.objects.filter(event = event).all()
     x=(Event.objects.count()+1-y)%5
@@ -45,6 +49,11 @@ def eventDetails(request, event_id, y):
         user = Profile.objects.get(pk=profile_id)
         purchase = Purchase.objects.create(event=event, profile=user, products=products, price=price)
         purchase.save()
+
+        total_price = Purchase.objects.filter(event=event.id).aggregate(Sum('price'))['price__sum']
+        per_user_price = total_price / profiles.count()
+
+        Contribution.objects.filter(event=event.id).update(amount=per_user_price)
         return redirect('eventDetails', event_id, y)
-    context={'event':event, 'profiles':profiles,'event_contributions':event_contributions, "event_purchase":event_purchase,'x':x}
+    context={'event':event,'event_contributions':event_contributions, "event_purchase":event_purchase,'x':x}
     return render(request, 'eventDetails.html', context)
