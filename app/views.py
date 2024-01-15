@@ -15,7 +15,6 @@ def home(request):
         new_event = Event(subject=subject, date=date)
         new_event.save()
         current_event = Event.objects.get(subject=subject, date=date)
-        print(contributors)
         for contributor in contributors:
             user = Profile.objects.get(pk=contributor)
             new_data = Contribution(event=current_event, profile=user, amount=0)
@@ -32,3 +31,20 @@ def addProfile(request):
         profile.save()
         return redirect('/')
     return render(request, 'addProfile.html')
+
+def eventDetails(request, event_id, y):
+    event = Event.objects.get(pk=event_id)
+    profiles = Profile.objects.all()
+    event_contributions = Contribution.objects.all()
+    event_purchase = Purchase.objects.filter(event = event).all()
+    x=(Event.objects.count()+1-y)%5
+    if request.method == 'POST':
+        profile_id = request.POST.get('profile_id')
+        products = request.POST.get('products')
+        price = request.POST.get('price')
+        user = Profile.objects.get(pk=profile_id)
+        purchase = Purchase.objects.create(event=event, profile=user, products=products, price=price)
+        purchase.save()
+        return redirect('eventDetails', event_id, y)
+    context={'event':event, 'profiles':profiles,'event_contributions':event_contributions, "event_purchase":event_purchase,'x':x}
+    return render(request, 'eventDetails.html', context)
